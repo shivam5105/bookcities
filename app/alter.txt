@@ -1,0 +1,60 @@
+-- ----------- 27th June, 2017 ----------------------
+ALTER TABLE  `stores` ADD  `mon_by_appointment` INT( 2 ) NOT NULL AFTER  `terms_and_conditions1` ,
+ADD  `tue_by_appointment` INT( 2 ) NOT NULL AFTER  `mon_by_appointment` ,
+ADD  `wed_by_appointment` INT( 2 ) NOT NULL AFTER  `tue_by_appointment` ,
+ADD  `thurs_by_appointment` INT( 2 ) NOT NULL AFTER  `wed_by_appointment` ,
+ADD  `fri_by_appointment` INT( 2 ) NOT NULL AFTER  `thurs_by_appointment` ,
+ADD  `sat_by_appointment` INT( 2 ) NOT NULL AFTER  `fri_by_appointment` ,
+ADD  `sun_by_appointment` INT( 2 ) NOT NULL AFTER  `sat_by_appointment` ;
+
+-- ------------- 28th June, 2017 ---------------------
+ALTER TABLE  `email_login` ADD  `otp_expiry` BIGINT( 20 ) NOT NULL ,
+ADD  `createdon` BIGINT( 20 ) NOT NULL ;
+
+CREATE TABLE IF NOT EXISTS `app_installed_devices` (
+  `platform_name` varchar(255) NOT NULL,
+  `device_token` varchar(255) NOT NULL,
+  `store_notification_sent` bigint(20) NOT NULL,
+  `createdon` bigint(20) NOT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+
+ALTER TABLE  `app_installed_devices` ADD  `id` BIGINT( 20 ) NOT NULL AUTO_INCREMENT PRIMARY KEY FIRST ;
+
+-- -------------------- 3rd July, 2017 ---------------------
+ALTER TABLE  `app_installed_devices` CHANGE  `store_notification_sent`  `new_store_notification_sent` BIGINT( 20 ) NOT NULL ;
+ALTER TABLE  `stores` ADD  `new_store_notification_sent` BIGINT( 20 ) NOT NULL AFTER  `sun_by_appointment` ;
+
+-- ------------------- 29th Aug, 2017 -------------------
+ALTER TABLE  `stores` ADD  `added_by` VARCHAR( 255 ) NOT NULL AFTER  `holiday_message` ,
+ADD  `added_by_id` BIGINT( 20 ) NOT NULL AFTER  `added_by` ;
+
+-- -------------- 1st Sep, 2017 ------------------------
+ALTER TABLE  `stores` ADD `mon_lunch_from_hr` int(2) NOT NULL AFTER `added_by_id`,
+ADD `mon_lunch_from_mins` int(2) NOT NULL AFTER `mon_lunch_from_hr`,
+ADD `mon_lunch_to_hr` int(2) NOT NULL AFTER `mon_lunch_from_mins`,
+ADD `mon_lunch_to_mins` int(2) NOT NULL AFTER `mon_lunch_to_hr`,
+ADD `tue_lunch_from_hr` int(2) NOT NULL AFTER `mon_lunch_to_mins`,
+ADD `tue_lunch_from_mins` int(2) NOT NULL AFTER `tue_lunch_from_hr`,
+ADD `tue_lunch_to_hr` int(2) NOT NULL AFTER `tue_lunch_from_mins`,
+ADD `tue_lunch_to_mins` int(2) NOT NULL AFTER `tue_lunch_to_hr`,
+ADD `wed_lunch_from_hr` int(2) NOT NULL AFTER `tue_lunch_to_mins`,
+ADD `wed_lunch_from_mins` int(2) NOT NULL AFTER `wed_lunch_from_hr`,
+ADD `wed_lunch_to_hr` int(2) NOT NULL AFTER `wed_lunch_from_mins`,
+ADD `wed_lunch_to_mins` int(11) NOT NULL AFTER `wed_lunch_to_hr`,
+ADD `thurs_lunch_from_hr` int(2) NOT NULL AFTER `wed_lunch_to_mins`,
+ADD `thurs_lunch_from_mins` int(2) NOT NULL AFTER `thurs_lunch_from_hr`,
+ADD `thurs_lunch_to_hr` int(2) NOT NULL AFTER `thurs_lunch_from_mins`,
+ADD `thurs_lunch_to_mins` int(2) NOT NULL AFTER `thurs_lunch_to_hr`,
+ADD `fri_lunch_from_hr` int(2) NOT NULL AFTER `thurs_lunch_to_mins`,
+ADD `fri_lunch_from_mins` int(2) NOT NULL AFTER `fri_lunch_from_hr`,
+ADD `fri_lunch_to_hr` int(2) NOT NULL AFTER `fri_lunch_from_mins`,
+ADD `fri_lunch_to_mins` int(2) NOT NULL AFTER `fri_lunch_to_hr`,
+ADD `sat_lunch_from_hr` int(2) NOT NULL AFTER `fri_lunch_to_mins`,
+ADD `sat_lunch_from_mins` int(2) NOT NULL AFTER `sat_lunch_from_hr`,
+ADD `sat_lunch_to_hr` int(2) NOT NULL AFTER `sat_lunch_from_mins`,
+ADD `sat_lunch_to_mins` int(2) NOT NULL AFTER `sat_lunch_to_hr`,
+ADD `sun_lunch_from_hr` int(2) NOT NULL AFTER `sat_lunch_to_mins`,
+ADD `sun_lunch_from_mins` int(2) NOT NULL AFTER `sun_lunch_from_hr`,
+ADD `sun_lunch_to_hr` int(2) NOT NULL AFTER `sun_lunch_from_mins`,
+ADD `sun_lunch_to_mins` int(2) NOT NULL AFTER `sun_lunch_to_hr`;
+
