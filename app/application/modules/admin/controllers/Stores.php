@@ -32,11 +32,11 @@ class Stores extends Admin_Controller {
 	    }
 	}
 	public function index(){
-		$this->users->check_access_permission();
+		//$this->users->check_access_permission();
 		redirect("/admin/stores/manage");
 	}
 	public function manage(){
-		$this->users->check_access_permission();
+		//$this->users->check_access_permission();
 
 		$this->layout->set_title("All Stores");
 
@@ -46,7 +46,12 @@ class Stores extends Admin_Controller {
 		{
 			$condition['status'] = $_GET['status'];
 		}
-
+$loggedin_data = $this->users->get_loggedin_data();
+$loggedin_user_role = $loggedin_data['role'];
+		if($loggedin_user_role!=1){
+					$condition['added_by_id'] = $loggedin_data['id'];
+	
+		}
 		$total_records = $this->mydb->get_total_records($table, $condition);
 
 		$this->config->load("pagination");
@@ -66,7 +71,7 @@ class Stores extends Admin_Controller {
 		$this->layout->view('stores/home', $this->data);
 	}
 	public function emptylatlong(){
-		$this->users->check_access_permission();
+		//$this->users->check_access_permission();
 		$this->layout->set_title("All Stores - Empty Latitude & Longitude");
 
 		$condition 	= array();
@@ -81,7 +86,12 @@ class Stores extends Admin_Controller {
 		{
 			$condition['status'] = $_GET['status'];
 		}
-
+		$loggedin_data = $this->users->get_loggedin_data();
+		$loggedin_user_role = $loggedin_data['role'];
+				if($loggedin_user_role!=1){
+							$condition['added_by_id'] = $loggedin_data['id'];
+			
+				}
 		$total_records = $this->mydb->get_total_records($table, $condition);
 
 		$this->config->load("pagination");
@@ -101,10 +111,13 @@ class Stores extends Admin_Controller {
 		$this->layout->view('stores/shopemptylatlong', $this->data);
 	}
 	public function create(){
+	
 		$this->layout->set_title("Create New Store");
 		
 		$condition 	= array();
 		$table		= "stores";
+$loggedin_data = $this->users->get_loggedin_data();
+$loggedin_user_role = $loggedin_data['role'];
 
 		$this->form_validation->set_rules('name', 'Shop Name', 'trim|required');
 		$this->form_validation->set_rules('address', 'Street', 'trim|required');
@@ -227,7 +240,11 @@ class Stores extends Admin_Controller {
 				}
 				unset($store_data[$day]);
 			}
-
+            if($loggedin_user_role!=1){
+				$store_data['status']=0;
+				$store_data['added_by_id']=$loggedin_data['id'];
+				
+			}
 			$store = $this->mydb->create($table,$store_data);
 			if($store)
 			{
@@ -279,11 +296,19 @@ class Stores extends Admin_Controller {
 		$this->layout->view('stores/create', $this->data);
 	}
 	public function edit($id = null) {
-		$this->users->check_access_permission();
+		//$this->users->check_access_permission();
 		$this->layout->set_title("Edit Store");
 		
 		$store_id 	= $id;
 		$condition 	= array('id'=>$store_id);
+		
+		$loggedin_data = $this->users->get_loggedin_data();
+		$loggedin_user_role = $loggedin_data['role'];
+
+		if($loggedin_user_role!=1){
+			$condition['added_by_id'] = $loggedin_data['id'];
+
+		}
 		$table		= "stores";
 
 		$store = $this->mydb->get($table,$condition);
@@ -430,6 +455,16 @@ class Stores extends Admin_Controller {
 					}
 					unset($store_data[$day]);
 				}
+				
+					if($loggedin_user_role!=1){
+						if($previous_status==0){
+							 $store_data['status']=0;
+						}else if($previous_status==1){
+							 $store_data['status']=2;
+
+						}
+						
+					}
 				$store = $this->mydb->update($table,$store_id,$store_data);
 				
 				if($store)
@@ -492,8 +527,24 @@ class Stores extends Admin_Controller {
 		}
 	}
 	public function delete($id){
-		$this->users->check_access_permission();
-		$deleted = $this->mydb->delete('stores', $id);
+		//$this->users->check_access_permission();
+		$loggedin_data = $this->users->get_loggedin_data();
+		$loggedin_user_role = $loggedin_data['role'];
+				$condition 	= array();
+
+				if($loggedin_user_role!=1){
+							$condition['id'] =$id;
+
+							$condition['added_by_id'] = $loggedin_data['id'];
+							
+							$deleted = $this->mydb->conditional_delete('stores',$condition);
+
+				}else{
+									$deleted = $this->mydb->delete('stores', $id);
+
+					
+				}
+		
 		if($deleted)
 		{
 			$this->session->set_flashdata('success', "Store deleted successfully!");

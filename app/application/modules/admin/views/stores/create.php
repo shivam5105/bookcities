@@ -448,6 +448,8 @@ echo form_open_multipart("",$form_attributes);
 				<div class="form-action form">
 					<h3 class="section-title">Create new store</h3>
 					<div class="field radio cf">
+					<?php if($loggedin_user_role == 1)
+				             { ?>
 						<label>
 							<input type="radio" checked class="radio" name="status" value="1" />
 							Publish
@@ -456,6 +458,12 @@ echo form_open_multipart("",$form_attributes);
 							<input type="radio" class="radio" name="status" value="0" />
 							Save as draft
 						</label>
+							 <?php }else{ ?>
+                                <label>
+							<input type="radio" checked class="radio" name="status" value="0" />
+							Save 
+						</label>						
+						<?php } ?>
 					</div>
 					<div class="field action cf">
 						<input type="submit" value="Create" class="button primary" />

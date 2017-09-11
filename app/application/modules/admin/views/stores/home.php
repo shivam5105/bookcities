@@ -6,11 +6,21 @@ foreach ($bookcategories as $key => $category)
 	$books_cats[$category->id] = $category->name;
 }
 ?>
+<?php
+$loggedin_data = $this->users->get_loggedin_data();
+$loggedin_user_role = $loggedin_data['role'];
+?>
 <div class="login-page inset">
 	<div class="row cf">
 		<div class="col c12">
 			<a href="<?php echo admin_url('stores/create'); ?>" class="button medium right">Add New</a>
+			<?php
+				if($loggedin_user_role == 1)
+				{
+					?>
 			<a href="<?php echo base_url().'shop/email_login_form'; ?>" target="_shopReg" class="button medium right" style="margin-right:5px;">Add Shop (Without Login)</a>
+							<?php } ?>
+
 			<div class="admin_filters">
 				<b>Status: </b><select name="status" id="status" onchange="window.location.href='?status='+this.value;">
 					<option value="">[-- All --]</option>

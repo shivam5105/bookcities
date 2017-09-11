@@ -1,4 +1,10 @@
 <?php $this->load->view('part/header'); ?>
+<?php 
+
+$loggedin_data = $this->users->get_loggedin_data();
+ $loggedin_user_role = $loggedin_data['role'];
+
+?>
 <script src="<?php echo asset_url('tinymce/tinymce.min.js'); ?>"></script>
 <script>
 	$(document).ready(function(){
@@ -497,8 +503,10 @@ echo form_open_multipart("admin/stores/edit/".$store->id,$form_attributes);
 			</div>
 			<div class="col c4">
 				<div class="form-action form">
-					<h3 class="section-title">Create new store</h3>
+					<h3 class="section-title">Update</h3>
 					<div class="field radio cf">
+						<?php if($loggedin_user_role == 1)
+				             { ?>
 						<label>
 							<input type="radio" checked class="radio" name="status" value="1" />
 							Publish
@@ -507,6 +515,12 @@ echo form_open_multipart("admin/stores/edit/".$store->id,$form_attributes);
 							<input type="radio" class="radio" name="status" value="0" />
 							Save as draft
 						</label>
+							 <?php }else{ ?>
+                                <label>
+							<input type="radio" checked class="radio" name="status" value="0" />
+							Submit 
+						</label>						
+						<?php } ?>
 					</div>
 					<div class="field action cf">
 						<input type="submit" value="Update" class="button primary" />

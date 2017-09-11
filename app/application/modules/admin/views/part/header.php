@@ -46,6 +46,11 @@ $loggedin_user_role = $loggedin_data['role'];
 				else
 				{
 					?>
+						<li class="<?php echo active_link('stores'); ?>"><a href="<?php echo admin_url('stores/'); ?>">Stores</a>
+						<ul class="sub">
+							<li class="<?php echo active_link('stores','emptylatlong'); ?>"><a href="<?php echo admin_url('stores/emptylatlong'); ?>">Empty Latitude & Longitude</a></li>
+						</ul>
+					</li>
 					<li class="<?php echo active_link('stores','create'); ?>"><a href="<?php echo admin_url('stores/create'); ?>">Create Store</a>
 					</li>
 					<?php
